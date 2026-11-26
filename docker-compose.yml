@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: campushire-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: campushire
+      POSTGRES_PASSWORD: campushire
+      POSTGRES_DB: campushire
+    ports:
+      - "5432:5432"
+    volumes:
+      - campushire_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campushire -d campushire"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  campushire_pgdata:
